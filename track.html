@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ar's Track</title>
+</head>
+<body>
+   <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">
+    <img src="https://images.unsplash.com/photo-1682686580391-615b1f28e5ee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxMXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" 
+    alt=""  class="image" draggable="false" >
+    <img src="https://images.unsplash.com/photo-1684166220037-d94a15745f9b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyNTh8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" 
+    alt="" class="image" draggable="false" >
+    <img src="https://images.unsplash.com/photo-1682687980918-3c2149a8f110?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwzMXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+    alt="" class="image" draggable="false" >
+    <img src="https://images.unsplash.com/photo-1682687220866-c856f566f1bd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2MXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" 
+    alt="" class="image" draggable="false" >
+    <img src="https://images.unsplash.com/photo-1684287038326-3700007a3072?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5MHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" 
+    alt="" class="image" draggable="false" >
+    <img src="https://images.unsplash.com/photo-1684357766172-3d6184d95c0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNjR8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" 
+    alt="" class="image" draggable="false" >
+    <img src="https://images.unsplash.com/photo-1682695795557-17447f921f79?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwyNjJ8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" 
+    alt="" class="image" draggable="false" >
+    <img src="https://images.unsplash.com/photo-1684361436134-a49313957328?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxOTd8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" 
+    alt="" class="image" draggable="false" >
+    <img src="https://images.unsplash.com/photo-1684168090330-972c40de6518?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMjV8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" 
+    alt="" class="image" draggable="false" >
+    <img src="https://images.unsplash.com/photo-1682957093349-0e83f097e1c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxOTl8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" 
+    alt="" class="image" draggable="false" >
+   </div>
+
+
+   <script>
+    const track = document.getElementById('image-track')
+    window.onmousedown = e => {
+        track.dataset.mouseDownAt = e.clientX
+    }
+    window.onmousemove = e => {
+        if (track.dataset.mouseDownAt === "0") return;
+        const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX
+        let maxDelta = window.innerWidth / 2
+
+        const percentage = ( mouseDelta / maxDelta ) * 100
+        let nextPercentage = parseFloat(track.dataset.prevPercentage) + percentage
+        console.log(percentage)
+        Math.min(nextPercentage,0)
+       
+    track.dataset.percentage =  Math.max(nextPercentage,-100)
+        track.animate({
+            transform: `translate(${nextPercentage}%,-50%)`
+        },{duration:1200, fill:"forwards"})
+        for (const image of track.getElementsByClassName('image')) {
+        image.animate({
+            objectPosition: `${nextPercentage + 100}% center`
+        },{duration:1200, fill:"forwards"})
+    }
+        
+    }
+
+    window.onmouseup = () => {
+        track.dataset.mouseDownAt = '0'
+        track.dataset.prevPercentage = track.dataset.percentage
+    }
+   
+    
+   </script>
+    
+</body>
+</html>
